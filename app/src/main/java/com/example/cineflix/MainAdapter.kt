@@ -27,7 +27,7 @@ class MainAdapter(
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: Movie) {
-            val testImageView: ImageView = itemView.findViewById(R.id.imagetView_test)
+            val testImageView: ImageView = itemView.findViewById(R.id.imageView_test)
             testImageView.setImageResource(movie.coverUrl)
         }
     }
