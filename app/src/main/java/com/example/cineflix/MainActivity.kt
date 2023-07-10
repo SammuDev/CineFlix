@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cineflix.model.Movie
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -12,7 +13,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = MainAdapter()
+        val movies = mutableListOf<Movie>()
+        for(i in 0 until 60) {
+            val newMovie = Movie("https://exemple.com/$i.jpg")
+            movies.add(newMovie)
+        }
+
+        val adapter = MainAdapter(movies)
         recyclerView = findViewById(R.id.recyclerview_main)
 
         recyclerView.adapter = adapter

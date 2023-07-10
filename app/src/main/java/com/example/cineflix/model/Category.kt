@@ -1,3 +1,3 @@
 package com.example.cineflix.model
 
-data class Category()
+//data class Category()
