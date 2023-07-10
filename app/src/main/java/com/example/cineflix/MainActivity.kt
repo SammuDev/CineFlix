@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         val movies = mutableListOf<Movie>()
         for(i in 0 until 60) {
-            val newMovie = Movie("https://exemple.com/$i.jpg")
+            val newMovie = Movie(R.drawable.movie_4)
             movies.add(newMovie)
         }
 
@@ -23,6 +23,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerview_main)
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
     }
 }

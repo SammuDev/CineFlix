@@ -3,7 +3,7 @@ package com.example.cineflix
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cineflix.model.Movie
 
@@ -27,8 +27,8 @@ class MainAdapter(
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: Movie) {
-            val testTextView: TextView = itemView.findViewById(R.id.textView_test)
-            testTextView.text = movie.coverUrl
+            val testImageView: ImageView = itemView.findViewById(R.id.imagetView_test)
+            testImageView.setImageResource(movie.coverUrl)
         }
     }
 }
