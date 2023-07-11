@@ -13,7 +13,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/movie_4"
+        android:src="@drawable/background_placeholder"
         android:text="Hello World"
         app:layout_constraintDimensionRatio="3:4"
         app:layout_constraintEnd_toEndOf="parent"
