@@ -7,9 +7,10 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cineflix.model.Movie
 
-class MainAdapter(
+// LISTA HORIZONTAL
+class MovieAdapter(
     private val moviesList: List<Movie>
-) : RecyclerView.Adapter<MainAdapter.MovieViewHolder>() {
+) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
