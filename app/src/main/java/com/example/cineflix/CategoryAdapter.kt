@@ -34,7 +34,7 @@ class CategoryAdapter(
         fun bind(category: Category) {
             textTitleCategory.text = category.name
 
-            recyclerViewCategory.adapter = MovieAdapter(category.movies)
+            recyclerViewCategory.adapter = MovieAdapter(category.movies, R.layout.movie_item)
             recyclerViewCategory.layoutManager =
                 LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
         }

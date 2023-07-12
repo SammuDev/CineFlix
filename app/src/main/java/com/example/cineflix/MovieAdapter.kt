@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cineflix.model.Movie
 
 // LISTA HORIZONTAL
 class MovieAdapter(
-    private val moviesList: List<Movie>
+    private val moviesList: List<Movie>, @LayoutRes private val layoutId: Int
 ) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
         return MovieViewHolder(view)
     }
 
