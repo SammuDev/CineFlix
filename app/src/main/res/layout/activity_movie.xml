@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/golden_soldiers"
+        android:src="@drawable/shadows"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,5 +22,14 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toBottomOf="@+id/image_movie"
+        app:layout_constraintEnd_toEndOf="@+id/image_movie"
+        app:layout_constraintStart_toStartOf="@+id/image_movie"
+        app:layout_constraintTop_toTopOf="@+id/image_movie" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
