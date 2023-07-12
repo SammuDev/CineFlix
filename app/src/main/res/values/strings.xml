@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CineFlix</string>
+    <string name="cast">Elenco: %1$s</string>
+    <string name="similar">Filmes semelhantes:</string>
 </resources>
