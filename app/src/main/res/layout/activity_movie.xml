@@ -34,6 +34,7 @@
         app:layout_constraintTop_toTopOf="@+id/image_movie" />
 
     <TextView
+        android:id="@+id/movie_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -58,7 +59,6 @@
         android:textColor="@color/gray_light"
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/image_movie"
-        tools:layout_editor_absoluteX="15dp"
         tools:text="TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXTTEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT" />
 
     <TextView
@@ -74,7 +74,6 @@
         android:textColor="@color/material_dynamic_neutral50"
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/movie_description"
-        tools:layout_editor_absoluteX="15dp"
         tools:text="TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT TEXTE TEXT TEXT" />
 
     <TextView
