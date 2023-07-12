@@ -26,13 +26,13 @@ class MovieActivity : AppCompatActivity() {
         movieCast.text = getString(R.string.cast, "Nikolaj Coster-Waldau, Michelle Fairley, Lena Headey, Emilia Clarke, Iain Glen, Harry Lloyd, Kit Harington, Sophie Turner, Maisie Williams, Richard Madden, Alfie Allen, Isaac Hempstead Wright, Jack Gleeson, Rory McCann, Peter Dinklage, Jason Momoa, Aidan Gillen, Liam Cunningham, John Bradley, Stephen Dillane, Carice van Houten\tMelisandre\t, James Cosmo, Jerome Flynn, Conleth Hill, Sibel Kekilli, Natalie Dormer, Charles Dance, Oona Chaplin, Rose Leslie, Joe Dempsie\tGendry, Kristofer Hivju, Gwendoline Christie, Iwan Rheon, Hannah Murray, Michiel Huisman, Nathalie Emmanuel, Indira Varma, Dean-Charles Chapman, Tom Wlaschiha[e], Michael McElhatton, Jonathan Pryce, Jacob Anderson")
 
         val movies = mutableListOf<Movie>()
-        for(i in 0 until 15) {
-            val newMovie = Movie(R.drawable.movie_4)
-            movies.add(newMovie)
-        }
-
-        recyclerMovies.adapter = MovieAdapter(movies, R.layout.movie_similar_item)
-        recyclerMovies.layoutManager = GridLayoutManager(this, 3)
+//        for(i in 0 until 15) {
+//            val newMovie = Movie(R.drawable.movie_4)
+//            movies.add(newMovie)
+//        }
+//
+//        recyclerMovies.adapter = MovieAdapter(movies, R.layout.movie_similar_item)
+//        recyclerMovies.layoutManager = GridLayoutManager(this, 3)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_movie)
         setSupportActionBar(toolbar)
