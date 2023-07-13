@@ -32,7 +32,7 @@ class CategoryAdapter(
         private val recyclerViewCategory: RecyclerView = itemView.findViewById(R.id.recyclerView_category)
 
         fun bind(category: Category) {
-            textTitleCategory.text = category.name
+            textTitleCategory.text = category.theme
 
             recyclerViewCategory.adapter = MovieAdapter(category.movies, R.layout.movie_item)
             recyclerViewCategory.layoutManager =

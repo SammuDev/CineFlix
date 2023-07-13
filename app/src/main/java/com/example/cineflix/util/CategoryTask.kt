@@ -3,11 +3,13 @@ package com.example.cineflix.util
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.ProgressBar
 import com.example.cineflix.model.Category
 import com.example.cineflix.model.Movie
 import org.json.JSONObject
+import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.io.InputStream
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.net.ssl.HttpsURLConnection
@@ -37,13 +39,16 @@ class CategoryTask(private var callback: Callback) {
                 urlConnection.readTimeout = 2000
                 urlConnection.connectTimeout = 2000
 
-                val statusCode = urlConnection.responseCode
-                if (statusCode > 399) {
+                val statusCode: Int = urlConnection.responseCode
+                if (statusCode > 400) {
                     throw IOException("Erro na comunicação com o servidor!")
                 }
 
-                val screen = urlConnection.inputStream
-                val jsonAsString = screen.bufferedReader().use { it.readText() }
+                val stream = urlConnection.inputStream
+
+//                val buffer = BufferedInputStream(stream)
+//                val jsonAsString = toString(buffer)
+                val jsonAsString = stream.bufferedReader().use { it.readText() }
 
                 val categories = toCategories(jsonAsString)
 
@@ -63,7 +68,7 @@ class CategoryTask(private var callback: Callback) {
         }
     }
 
-    private fun toCategories(jsonAsString: String) : List<Category> {
+    private fun toCategories(jsonAsString: String): List<Category> {
         val categories = mutableListOf<Category>()
 
         val jsonRoot = JSONObject(jsonAsString)
@@ -71,16 +76,15 @@ class CategoryTask(private var callback: Callback) {
 
         for (i in 0 until jsonCategories.length()) {
             val jsonTheme = jsonCategories.getJSONObject(i)
-
             val title = jsonTheme.getString("title")
             val jsonMovies = jsonTheme.getJSONArray("movie")
 
             val movies = mutableListOf<Movie>()
             for (j in 0 until jsonMovies.length()) {
-                val jsonMovie = jsonCategories.getJSONObject(j)
+                val jsonMovie = jsonMovies.getJSONObject(j)
 
-                val movieId = jsonTheme.getInt("id")
-                val movieUrl = jsonTheme.getString("cover_url")
+                val movieId = jsonMovie.getInt("id")
+                val movieUrl = jsonMovie.getString("cover_url")
 
                 movies.add(Movie(movieId, movieUrl))
             }
@@ -89,4 +93,16 @@ class CategoryTask(private var callback: Callback) {
         }
         return categories
     }
+
+//    private fun toString(stream: InputStream): String {
+//        val bytes = ByteArray(1024)
+//        val byteArrayOutputStream = ByteArrayOutputStream()
+//        var read: Int
+//        while (true) {
+//            read = stream.read(bytes)
+//            if (read <= 0) break
+//            byteArrayOutputStream.write(bytes,0, read)
+//        }
+//        return String(byteArrayOutputStream.toByteArray())
+//    }
 }

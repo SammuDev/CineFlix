@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cineflix.model.Movie
+import com.squareup.picasso.Picasso
 
 // LISTA HORIZONTAL
 class MovieAdapter(
@@ -29,7 +30,7 @@ class MovieAdapter(
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: Movie) {
             val imageBackground: ImageView = itemView.findViewById(R.id.image_background)
-//            imageBackground.setImageResource(movie.coverUrl)
+            Picasso.get().load(movie.coverUrl).into(imageBackground)
         }
     }
 }

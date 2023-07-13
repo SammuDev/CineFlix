@@ -13,6 +13,8 @@ import com.example.cineflix.util.CategoryTask
 class MainActivity : AppCompatActivity(), CategoryTask.Callback {
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: CategoryAdapter
+    private val categories = mutableListOf<Category>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,9 +22,7 @@ class MainActivity : AppCompatActivity(), CategoryTask.Callback {
 
         progressBar = findViewById(R.id.progressBar_mainActivity)
 
-        val categories = mutableListOf<Category>()
-
-        val adapter = CategoryAdapter(categories)
+        adapter = CategoryAdapter(categories)
         recyclerView = findViewById(R.id.recyclerView_main)
 
         recyclerView.adapter = adapter
@@ -36,6 +36,11 @@ class MainActivity : AppCompatActivity(), CategoryTask.Callback {
     }
 
     override fun onResult(categories: List<Category>) {
+        this.categories.clear()
+        this.categories.addAll(categories)
+
+        adapter.notifyDataSetChanged()
+
         progressBar.visibility = View.GONE
     }
 
