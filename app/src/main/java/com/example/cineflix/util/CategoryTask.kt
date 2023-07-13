@@ -1,6 +1,9 @@
 package com.example.cineflix.util
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.ProgressBar
 import com.example.cineflix.model.Category
 import com.example.cineflix.model.Movie
 import org.json.JSONObject
@@ -9,8 +12,19 @@ import java.net.URL
 import java.util.concurrent.Executors
 import javax.net.ssl.HttpsURLConnection
 
-class CategoryTask {
+class CategoryTask(private var callback: Callback) {
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    interface Callback {
+        fun onPreExecute()
+        fun onResult(categories: List<Category>)
+        fun onFailure(message: String)
+    }
+
     fun execute(url: String) {
+        callback.onPreExecute()
+
         val executor = Executors.newSingleThreadExecutor()
 
         executor.execute {
@@ -33,8 +47,16 @@ class CategoryTask {
 
                 val categories = toCategories(jsonAsString)
 
+                handler.post {
+                    callback.onResult(categories)
+                }
+
             } catch (e: Exception) {
-                Log.e("Teste", e.message ?: "Erro desconhecido", e)
+                val message = e.message ?: "Erro desconhecido"
+                Log.e("Teste", message, e)
+                handler.post {
+                    callback.onFailure(message)
+                }
             } finally {
                 urlConnection?.disconnect()
             }
