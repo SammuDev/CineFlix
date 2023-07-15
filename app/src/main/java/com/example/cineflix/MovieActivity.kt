@@ -3,6 +3,7 @@ package com.example.cineflix
 import android.graphics.drawable.LayerDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
@@ -48,5 +49,10 @@ class MovieActivity : AppCompatActivity() {
 
         val imageCover: ImageView = findViewById(R.id.image_movie)
         imageCover.setImageDrawable(layerDrawable)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) finish()
+        return super.onOptionsItemSelected(item)
     }
 }

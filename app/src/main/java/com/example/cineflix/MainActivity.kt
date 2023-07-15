@@ -1,5 +1,6 @@
 package com.example.cineflix
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -22,7 +23,11 @@ class MainActivity : AppCompatActivity(), CategoryTask.Callback {
 
         progressBar = findViewById(R.id.progressBar_mainActivity)
 
-        adapter = CategoryAdapter(categories)
+        adapter = CategoryAdapter(categories) {
+            val intent = Intent(this@MainActivity, MovieActivity::class.java)
+            intent.putExtra("id", it)
+            startActivity(intent)
+        }
         recyclerView = findViewById(R.id.recyclerView_main)
 
         recyclerView.adapter = adapter

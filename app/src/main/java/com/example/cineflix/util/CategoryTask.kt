@@ -31,6 +31,7 @@ class CategoryTask(private var callback: Callback) {
 
         executor.execute {
             var urlConnection: HttpsURLConnection? = null
+            var stream: InputStream? = null
 
             try {
                 val requestUrl = URL(url)
@@ -44,7 +45,7 @@ class CategoryTask(private var callback: Callback) {
                     throw IOException("Erro na comunicação com o servidor!")
                 }
 
-                val stream = urlConnection.inputStream
+                stream = urlConnection.inputStream
 
 //                val buffer = BufferedInputStream(stream)
 //                val jsonAsString = toString(buffer)
@@ -64,6 +65,7 @@ class CategoryTask(private var callback: Callback) {
                 }
             } finally {
                 urlConnection?.disconnect()
+                stream?.close()
             }
         }
     }

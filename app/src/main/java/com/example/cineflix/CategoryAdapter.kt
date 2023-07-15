@@ -10,7 +10,8 @@ import com.example.cineflix.model.Category
 
 // LISTA VERTICAL
 class CategoryAdapter(
-    private val categories: List<Category>
+    private val categories: List<Category>,
+    private val onItemClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view =
@@ -34,7 +35,7 @@ class CategoryAdapter(
         fun bind(category: Category) {
             textTitleCategory.text = category.theme
 
-            recyclerViewCategory.adapter = MovieAdapter(category.movies, R.layout.movie_item)
+            recyclerViewCategory.adapter = MovieAdapter(category.movies, R.layout.movie_item, onItemClickListener)
             recyclerViewCategory.layoutManager =
                 LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
         }

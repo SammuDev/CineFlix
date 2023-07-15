@@ -11,7 +11,9 @@ import com.squareup.picasso.Picasso
 
 // LISTA HORIZONTAL
 class MovieAdapter(
-    private val moviesList: List<Movie>, @LayoutRes private val layoutId: Int
+    private val moviesList: List<Movie>,
+    @LayoutRes private val layoutId: Int,
+    private val onItemClickListener: ((Int) -> Unit)? = null
 ) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
@@ -30,6 +32,10 @@ class MovieAdapter(
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: Movie) {
             val imageBackground: ImageView = itemView.findViewById(R.id.image_background)
+            imageBackground.setOnClickListener {
+                onItemClickListener?.invoke(movie.id)
+            }
+
             Picasso.get().load(movie.coverUrl).into(imageBackground)
         }
     }
