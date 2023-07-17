@@ -4,7 +4,9 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,14 +19,24 @@ import com.example.cineflix.model.MovieDetail
 import com.example.cineflix.util.MovieTask
 
 class MovieActivity : AppCompatActivity(), MovieTask.Callback {
-    private val movieTitle: TextView = findViewById(R.id.movie_title)
-    private val movieDescription: TextView = findViewById(R.id.movie_description)
-    private val movieCast: TextView = findViewById(R.id.movie_cast)
-    private val recyclerMovies: RecyclerView = findViewById(R.id.recyclerView_similarMovies)
+    private lateinit var movieTitle: TextView
+    private lateinit var movieDescription: TextView
+    private lateinit var movieCast: TextView
+    private lateinit var recyclerMovies: RecyclerView
+    private lateinit var movieAdapter: MovieAdapter
+    private lateinit var progressBar: ProgressBar
+
+    private val movies = mutableListOf<Movie>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
+
+        movieTitle = findViewById(R.id.movie_title)
+        movieDescription = findViewById(R.id.movie_description)
+        movieCast = findViewById(R.id.movie_cast)
+        recyclerMovies = findViewById(R.id.recyclerView_similarMovies)
+        progressBar = findViewById(R.id.movie_progress)
 
         val id = intent?.getIntExtra("id", 0) ?: throw IllegalStateException("ID não encontrado!")
         val url =
@@ -32,17 +44,8 @@ class MovieActivity : AppCompatActivity(), MovieTask.Callback {
 
         MovieTask(this).execute(url)
 
-        movieTitle.text = "Game Of Thrones"
-        movieDescription.text =
-            "Situada nos continentes fictícios de Westeros e Essos, a série centra-se no Trono de Ferro dos Sete Reinos e segue um enredo de alianças e conflitos entre as famílias nobres dinásticas, seja competindo para reivindicar o trono ou lutando por sua independência."
-        movieCast.text = getString(
-            R.string.cast,
-            "Nikolaj Coster-Waldau, Michelle Fairley, Lena Headey, Emilia Clarke, Iain Glen, Harry Lloyd, Kit Harington, Sophie Turner, Maisie Williams, Richard Madden, Alfie Allen, Isaac Hempstead Wright, Jack Gleeson, Rory McCann, Peter Dinklage, Jason Momoa, Aidan Gillen, Liam Cunningham, John Bradley, Stephen Dillane, Carice van Houten\tMelisandre\t, James Cosmo, Jerome Flynn, Conleth Hill, Sibel Kekilli, Natalie Dormer, Charles Dance, Oona Chaplin, Rose Leslie, Joe Dempsie\tGendry, Kristofer Hivju, Gwendoline Christie, Iwan Rheon, Hannah Murray, Michiel Huisman, Nathalie Emmanuel, Indira Varma, Dean-Charles Chapman, Tom Wlaschiha[e], Michael McElhatton, Jonathan Pryce, Jacob Anderson"
-        )
-
-        val movies = mutableListOf<Movie>()
-
-        recyclerMovies.adapter = MovieAdapter(movies, R.layout.movie_similar_item)
+        movieAdapter = MovieAdapter(movies, R.layout.movie_similar_item)
+        recyclerMovies.adapter = movieAdapter
         recyclerMovies.layoutManager = GridLayoutManager(this, 3)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_movie)
@@ -62,15 +65,24 @@ class MovieActivity : AppCompatActivity(), MovieTask.Callback {
     }
 
     override fun onPreExecute() {
-        TODO("Not yet implemented")
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun onFailure(message: String) {
+        progressBar.visibility = View.GONE
         Toast.makeText(this@MovieActivity, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onResult(movieDetail: MovieDetail) {
-        Log.i("teste", movieDescription.toString())
+        progressBar.visibility = View.GONE
+
+        movieTitle.text = movieDetail.movie.title
+        movieDescription.text = movieDetail.movie.description
+        movieCast.text = getString(R.string.cast, movieDetail.movie.cast)
+
+        movies.clear()
+        movies.addAll(movieDetail.similar)
+        movieAdapter.notifyDataSetChanged()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
