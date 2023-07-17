@@ -3,24 +3,22 @@ package com.example.cineflix.util
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.example.cineflix.model.Category
 import com.example.cineflix.model.Movie
+import com.example.cineflix.model.MovieDetail
 import org.json.JSONObject
-import java.io.BufferedInputStream
-import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.net.ssl.HttpsURLConnection
 
-class CategoryTask(private var callback: Callback) {
+class MovieTask(private var callback: Callback) {
 
     private val handler = Handler(Looper.getMainLooper())
 
     interface Callback {
         fun onPreExecute()
-        fun onResult(categories: List<Category>)
+        fun onResult(movieDetail: MovieDetail)
         fun onFailure(message: String)
     }
 
@@ -31,6 +29,7 @@ class CategoryTask(private var callback: Callback) {
 
         executor.execute {
             var urlConnection: HttpsURLConnection? = null
+//            var buffer: BufferedInputStream? = null
             var stream: InputStream? = null
 
             try {
@@ -41,7 +40,14 @@ class CategoryTask(private var callback: Callback) {
                 urlConnection.connectTimeout = 2000
 
                 val statusCode: Int = urlConnection.responseCode
-                if (statusCode > 400) throw IOException("Erro na comunicação com o servidor!")
+                if (statusCode == 400) {
+                    stream = urlConnection.errorStream
+                    val jsonAsString = stream.bufferedReader().use { it.readText() }
+
+                    val json = JSONObject(jsonAsString)
+                    val messageDontExistPage = json.getString("message")
+                    throw IOException(messageDontExistPage)
+                } else if (statusCode > 400) throw IOException("Erro na comunicação com o servidor!")
 
                 stream = urlConnection.inputStream
 
@@ -49,10 +55,10 @@ class CategoryTask(private var callback: Callback) {
 //                val jsonAsString = toString(buffer)
                 val jsonAsString = stream.bufferedReader().use { it.readText() }
 
-                val categories = toCategories(jsonAsString)
+                val movieDetail = toMovieDetail(jsonAsString)
 
                 handler.post {
-                    callback.onResult(categories)
+                    callback.onResult(movieDetail)
                 }
 
             } catch (e: Exception) {
@@ -68,30 +74,29 @@ class CategoryTask(private var callback: Callback) {
         }
     }
 
-    private fun toCategories(jsonAsString: String): List<Category> {
-        val categories = mutableListOf<Category>()
-
+    private fun toMovieDetail(jsonAsString: String): MovieDetail {
         val jsonRoot = JSONObject(jsonAsString)
-        val jsonCategories = jsonRoot.getJSONArray("category")
 
-        for (i in 0 until jsonCategories.length()) {
-            val jsonTheme = jsonCategories.getJSONObject(i)
-            val title = jsonTheme.getString("title")
-            val jsonMovies = jsonTheme.getJSONArray("movie")
+        val id = jsonRoot.getInt("id")
+        val title = jsonRoot.getString("title")
+        val description = jsonRoot.getString("desc")
+        val cast = jsonRoot.getString("cast")
+        val coverUrl = jsonRoot.getString("cover_url")
+        val jsonMovies = jsonRoot.getJSONArray("movie")
 
-            val movies = mutableListOf<Movie>()
-            for (j in 0 until jsonMovies.length()) {
-                val jsonMovie = jsonMovies.getJSONObject(j)
+        val similarMovies = mutableListOf<Movie>()
+        for (i in 0 until jsonMovies.length()) {
+            val jsonSingleMovie = jsonMovies.getJSONObject(i)
 
-                val movieId = jsonMovie.getInt("id")
-                val movieUrl = jsonMovie.getString("cover_url")
+            val similarId = jsonSingleMovie.getInt("id")
+            val similarCoverUrl = jsonSingleMovie.getString("cover_url")
 
-                movies.add(Movie(movieId, movieUrl))
-            }
-
-            categories.add(Category(title, movies))
+            val movie = Movie(similarId, similarCoverUrl)
+            similarMovies.add(movie)
         }
-        return categories
+        val movie = Movie(id, coverUrl, title, description, cast)
+
+        return MovieDetail(movie, similarMovies)
     }
 
 //    private fun toString(stream: InputStream): String {

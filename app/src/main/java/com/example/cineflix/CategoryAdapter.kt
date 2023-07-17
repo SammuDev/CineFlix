@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cineflix.model.Category
 
-// LISTA VERTICAL
 class CategoryAdapter(
     private val categories: List<Category>,
     private val onItemClickListener: (Int) -> Unit
@@ -30,12 +29,14 @@ class CategoryAdapter(
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textTitleCategory: TextView = itemView.findViewById(R.id.text_title)
-        private val recyclerViewCategory: RecyclerView = itemView.findViewById(R.id.recyclerView_category)
+        private val recyclerViewCategory: RecyclerView =
+            itemView.findViewById(R.id.recyclerView_category)
 
         fun bind(category: Category) {
             textTitleCategory.text = category.theme
 
-            recyclerViewCategory.adapter = MovieAdapter(category.movies, R.layout.movie_item, onItemClickListener)
+            recyclerViewCategory.adapter =
+                MovieAdapter(category.movies, R.layout.movie_item, onItemClickListener)
             recyclerViewCategory.layoutManager =
                 LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
         }
