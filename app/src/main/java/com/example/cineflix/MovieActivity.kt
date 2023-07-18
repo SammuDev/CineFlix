@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cineflix.model.Movie
 import com.example.cineflix.model.MovieDetail
 import com.example.cineflix.util.MovieTask
+import com.squareup.picasso.Picasso
 
 class MovieActivity : AppCompatActivity(), MovieTask.Callback {
     private lateinit var movieTitle: TextView
@@ -27,6 +28,8 @@ class MovieActivity : AppCompatActivity(), MovieTask.Callback {
     private lateinit var progressBar: ProgressBar
 
     private val movies = mutableListOf<Movie>()
+
+    private lateinit var imageMovie: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +86,9 @@ class MovieActivity : AppCompatActivity(), MovieTask.Callback {
         movies.clear()
         movies.addAll(movieDetail.similar)
         movieAdapter.notifyDataSetChanged()
+
+        imageMovie = findViewById(R.id.image_movie)
+        Picasso.get().load(movieDetail.movie.coverUrl).into(imageMovie)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
